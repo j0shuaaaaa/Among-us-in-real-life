@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Among Us Year 11 Field Trip Edition</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+:root{--bgi:radial-gradient(ellipse at 50% -10%,#6b0f1a 0%,#22050a 50%,#0b0103 100%);--cd:rgba(46,10,16,.88);--tx:#fff1f1;--mu:#d49a9f;--gr:#2f9e5a;--rd:#e5383b;--bl:#c1121f;--ln:rgba(255,90,90,.22);--in:#12040a;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#0b0103}
+body.red{--bgi:#000;--cd:#140404;--tx:#ff5050;--mu:#a83030;--gr:#7a1515;--rd:#a01212;--bl:#7a1515;--ln:#3a0a0a;--in:#0a0000}
+body.red .b{filter:brightness(.55) saturate(.8)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:var(--bgi) fixed;color:var(--tx);font:16px/1.4 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+#app{max-width:520px;margin:0 auto;padding:12px 14px 40px}
+h1{font-size:20px;margin:4px 0;text-transform:uppercase;letter-spacing:2px;text-shadow:0 0 14px rgba(255,60,60,.6)}
+.sub{color:var(--mu);font-size:13px;margin-bottom:10px;letter-spacing:1px}
+.card{background:var(--cd);border:1px solid var(--ln);border-radius:16px;padding:14px;margin:12px 0;box-shadow:0 6px 24px rgba(0,0,0,.45);animation:up .25s ease}
+@keyframes up{from{opacity:0;transform:translateY(8px)}}
+.hero{text-align:center;padding:14px 0 4px}
+.hero svg{animation:fl 3s ease-in-out infinite;filter:drop-shadow(0 0 16px rgba(255,60,60,.7))}
+.hero h1{font-size:30px;margin:8px 0 2px}
+@keyframes fl{50%{transform:translateY(-8px) rotate(3deg)}}
+.b{display:block;width:100%;border:0;border-radius:14px;padding:14px;font-size:16px;font-weight:800;color:#fff;background:linear-gradient(180deg,#e5383b,#b0101c);box-shadow:0 4px 0 #6d0a12,0 8px 16px rgba(0,0,0,.4);margin:10px 0;cursor:pointer;letter-spacing:.5px;transition:transform .08s,box-shadow .08s}
+.b:active{transform:translateY(3px);box-shadow:0 1px 0 #6d0a12}
+.b.g{background:linear-gradient(180deg,#3cc274,#238a4c);box-shadow:0 4px 0 #14562f,0 8px 16px rgba(0,0,0,.4)}
+.b.r{background:linear-gradient(180deg,#ff4d4f,#c1121f);box-shadow:0 4px 0 #6d0a12,0 0 20px rgba(255,60,60,.55)}
+.b.m{background:linear-gradient(180deg,#4a1a21,#33101a);box-shadow:0 4px 0 #1c0509,0 6px 12px rgba(0,0,0,.4)}
+.b.s{padding:8px 12px;font-size:13px;width:auto;display:inline-block;margin:0 0 0 6px;box-shadow:0 2px 0 #1c0509}
+.b:disabled{opacity:.4}
+input{width:100%;padding:13px;border-radius:12px;border:2px solid #5a1a22;background:var(--in);color:var(--tx);font-size:18px;margin:6px 0}
+input:focus,textarea:focus{outline:0;border-color:var(--rd);box-shadow:0 0 0 3px rgba(229,56,59,.3)}
+.pb{height:22px;background:var(--in);border:1px solid var(--ln);border-radius:11px;overflow:hidden;margin:6px 0}
+.pb i{display:block;height:100%;background:repeating-linear-gradient(45deg,#3cc274,#3cc274 10px,#2f9e5a 10px,#2f9e5a 20px);transition:width .5s}
+.row{display:flex;align-items:center;gap:8px;padding:6px 0}
+.dead{opacity:.45;text-decoration:line-through}
+.sp{flex:1}
+.big{font-size:30px;font-weight:800;text-align:center;margin:8px 0}
+.tk{display:flex;width:100%;text-align:left;gap:10px;background:rgba(0,0,0,.35);border:1px solid var(--ln);color:var(--tx);border-radius:12px;padding:12px;margin:6px 0;font-size:15px}
+.tk.d{opacity:.5;text-decoration:line-through}
+#role{background:repeating-linear-gradient(45deg,#2a0a10,#2a0a10 10px,#33101a 10px,#33101a 20px);border:2px dashed var(--rd);user-select:none;-webkit-user-select:none;touch-action:none;text-align:center;padding:24px 10px;font-weight:800;letter-spacing:1px}
+.rv{display:none}
+#fl{white-space:pre-line;position:fixed;inset:0;display:none;align-items:center;justify-content:center;text-align:center;font-size:38px;font-weight:900;color:#fff;z-index:20;padding:20px;animation:bk .5s infinite;text-shadow:0 0 20px #000}
+@keyframes bk{50%{opacity:.6}}
+#lo{position:fixed;inset:0;background:#000;color:#222;display:none;align-items:center;justify-content:center;z-index:15;font-size:14px}
+.mu{color:var(--mu);font-size:13px}
+.tag{font-size:12px;padding:2px 8px;border-radius:8px;background:#4a1a21}
+.shake{animation:shk .12s 6}
+@keyframes shk{25%{transform:translate(-7px,3px)}75%{transform:translate(7px,-3px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes pulse{50%{box-shadow:0 4px 0 #6d0a12,0 0 32px rgba(255,70,70,1)}}
+@keyframes wob{0%,88%,100%{transform:none}91%{transform:rotate(-1.5deg)}95%{transform:rotate(1.5deg)}}
+@keyframes sir{50%{box-shadow:0 0 30px #ff2a2a}}
+.b.r[data-a=rep]{animation:pulse 1.6s infinite}
+.b[data-a=emg]:not(:disabled){animation:wob 2.6s infinite}
+.sir{animation:sir .9s infinite}
+.drop,.big.pop{animation:pop .5s}
+#fl{overflow:hidden}
+.rings{position:absolute;width:160vmax;height:160vmax;background:conic-gradient(rgba(255,255,255,.28),transparent 20%,rgba(255,255,255,.28) 50%,transparent 70%,rgba(255,255,255,.28));animation:spin 1.3s linear infinite}
+.fi{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;animation:shk .15s infinite}
+.fi .t{animation:pop .45s}
+.fi svg{animation:fl 1s ease-in-out infinite}
+</style></head><body>
+<div id="app"></div><div id="fl"></div><div id="lo"></div>
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const COL=[['Red','#e5383b'],['Blue','#3b82f6'],['Green','#22c55e'],['Pink','#ec4899'],['Orange','#f97316'],['Yellow','#eab308'],['Grey','#6b7280'],['White','#e5e7eb'],['Purple','#a855f7'],['Cyan','#06b6d4'],['Brown','#a16207'],['Lime','#84cc16']];
+const POOL=['Collect 3 different leaves','Find a Y-shaped stick','Tie a knot (bowline or any)','Fill a water bottle at the tap','Take a selfie with 2 crewmates','Stack 5 stones','Find something red','Do 10 star jumps','Collect 3 pinecones','Spell a word with sticks','Hum a song for 10 seconds','Find a feather or something soft','Pick up 5 pieces of litter','Balance on one leg for 20 seconds','Draw a map of camp','Find a heart-shaped rock','Tidy the common table','Count the tents and remember the number','Find a bug (don’t hurt it!)','Write a 4-line poem about the trip'];
+let R=null,me={id:'',n:''},S=null,host=false,off=0,lm=0,ls=0,lpn=0,pp='',kcd=0,first=true,code='',err='',busy=false;
+const sv=()=>{try{localStorage.setItem('aug',JSON.stringify({code,me,host,S:host?S:null}))}catch(e){}};
+const ld=()=>{try{return JSON.parse(localStorage.getItem('aug'))}catch(e){return null}};
+let AC;function au(){try{AC=AC||new(window.AudioContext||webkitAudioContext)();AC.resume()}catch(e){}}
+function siren(d){d=d||3;try{au();const o=AC.createOscillator(),g=AC.createGain();o.type='square';g.gain.value=.25;o.connect(g);g.connect(AC.destination);const t=AC.currentTime;for(let i=0;i<d*2;i++)o.frequency.setValueAtTime(i%2?900:600,t+i*.5);o.start();o.stop(t+d)}catch(e){}try{navigator.vibrate&&navigator.vibrate([400,150,400,150,400,150,800])}catch(e){}}
+function flash(t,c){const f=$('#fl'),ic=/BODY/.test(t)?`<div style="transform:rotate(85deg)">${crew('#ffffff',100)}</div>`:/MEETING/.test(t)?crew('#ffffff',100):'<div style="font-size:80px">\u26a0\ufe0f</div>';f.innerHTML='<div class=rings></div><div class=fi>'+ic+'<div class=t>'+esc(t)+'</div></div>';f.style.background=c||'#c1121f';f.style.display='flex';const a=$('#app');a.classList.add('shake');setTimeout(()=>a.classList.remove('shake'),800);setTimeout(()=>f.style.display='none',3200)}
+const now=()=>Date.now()+off;
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const alive=()=>Object.keys(S.pl).filter(k=>S.pl[k].alive);
+const crewIds=()=>Object.keys(S.pl).filter(k=>S.pl[k].role==='crew');
+function prog(){const c=crewIds();if(!S.tot)return 0;let d=0;c.forEach(k=>S.pl[k].tk.forEach(t=>d+=t.d));return Math.min(100,Math.round(d/S.tot*100))}
+const lg=t=>{S.log.push(new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+' '+t);S.log=S.log.slice(-40)};
+
+/* ---------- host engine ---------- */
+function newS(){return{v:0,phase:'lobby',pl:{},set:{imp:1,disc:45,vote:30,tasks:4,mtg:1,cool:30,rev:0,bar:0,anon:1},log:[],paused:false,pool:POOL.slice(),hid:me.id}}
+function push(){if(!host||!S)return;S.now=Date.now();R&&R.emit('state',S).catch(()=>{});apply();sv()}
+function bc(){S.v++;push()}
+function win(w){S.phase='over';S.win=w;S.sab=null;lg((w==='crew'?'Crew':'Impostors')+' win')}
+function chk(){if(S.phase==='lobby'||S.phase==='over')return;const ia=alive().filter(k=>S.pl[k].role==='imp').length,ca=alive().length-ia;
+if(prog()>=100||ia===0)win('crew');else if(ia>=ca&&(S.n0>2||ca===0))win('imp')}
+function meet(id,k){const p=S.pl[id];S.phase='meeting';S.sab=null;S.pshow=prog();S.vt={};S.m={by:id,k,st:'g',end:0,v:(S.m?S.m.v:0)+1};lg(p.n+(k==='b'?' reported a body':' called a meeting'))}
+function endVote(){const c={};let sk=0;for(const k in S.vt){const t=S.vt[k];if(t==='skip')sk++;else c[t]=(c[t]||0)+1}
+const e=Object.entries(c);e.push(['skip',sk]);e.sort((a,b)=>b[1]-a[1]);const top=e[0],tie=e[1]&&e[1][1]===top[1];
+S.tl=e.filter(x=>x[1]>0).map(([k,n])=>(k==='skip'?'Skip':S.pl[k].n)+': '+n);
+if(top[0]!=='skip'&&!tie&&top[1]>0){const p=S.pl[top[0]];p.alive=false;S.ej=S.set.rev?p.n+' was '+(p.role==='imp'?'':'not ')+'an Impostor.':p.n+' was ejected.';lg(p.n+' was ejected')}else{S.ej='No one was ejected.';lg('No one ejected')}
+S.phase='result';S.rend=Date.now()+9000}
+function act(m){if(!host||!S)return;const p=S.pl[m.id],H=m.id===S.hid;
+if(m.a==='join'){if(S.pl[m.id]){S.pl[m.id].n=m.n}else if(S.phase==='lobby'&&Object.keys(S.pl).length<12){S.pl[m.id]={n:String(m.n).slice(0,14),c:Object.keys(S.pl).length,role:'',alive:true,tk:[],mt:0}}else return;return bc()}
+if(!p)return;
+switch(m.a){
+case'set':if(H&&S.phase==='lobby'){const[k,d]=m.p.split(',');const L={imp:[1,3],disc:[10,180],vote:[10,120],tasks:[1,8],mtg:[0,3],cool:[10,90],rev:[0,1],bar:[0,1],anon:[0,1]}[k];const st={disc:5,vote:5,cool:5}[k]||1;S.set[k]=Math.max(L[0],Math.min(L[1],S.set[k]+d*st))}break;
+case'start':if(H&&S.phase==='lobby'){const ids=Object.keys(S.pl);if(ids.length<2||!(S.pool||POOL).length)return;const k=Math.min(S.set.imp,Math.max(1,Math.floor((ids.length-1)/2))),sh=shuf(ids);
+sh.forEach((id,i)=>{const q=S.pl[id];q.role=i<k?'imp':'crew';q.alive=true;q.mt=0;q.tk=shuf(S.pool||POOL).slice(0,S.set.tasks).map(t=>({t,d:0}))});
+S.tot=(ids.length-k)*Math.min(S.set.tasks,(S.pool||POOL).length);S.n0=ids.length;S.pshow=0;S.phase='play';S.win=null;S.m=null;S.sab=null;lg('Game started')}break;
+case'done':if(S.phase==='play'&&!S.paused&&p.tk[m.i]&&!(S.sab&&S.sab.t==='freeze'&&p.role==='crew')){p.tk[m.i].d=p.tk[m.i].d?0:1;if(p.role==='crew'){lg(p.n+(p.tk[m.i].d?' finished':' un-did')+' a task');chk()}}break;
+case'rep':if(S.phase==='play'&&!S.paused&&p.alive)meet(m.id,'b');break;
+case'emg':if(S.phase==='play'&&!S.paused&&p.alive&&p.mt<S.set.mtg){p.mt++;meet(m.id,'e')}break;
+case'die':if(S.phase==='play'&&p.alive){p.alive=false;lg(p.n+' was killed');chk()}break;
+case'vote':if(S.phase==='meeting'&&S.m.st==='v'&&p.alive&&!(m.id in S.vt)&&(m.t==='skip'||S.pl[m.t]&&S.pl[m.t].alive))S.vt[m.id]=m.t;break;
+case'sab':if(S.phase==='play'&&!S.paused&&p.alive&&p.role==='imp'&&!S.sab&&Date.now()>(S.scd||0)){const D={lights:30,fix:60,comms:45,freeze:60,lock:30};if(!D[m.t])break;S.sab={t:m.t,id:Date.now(),end:Date.now()+D[m.t]*1000,fx:{}};S.scd=S.sab.end+20000;lg('Sabotage: '+m.t)}break;
+case'fix':if(S.sab&&S.sab.t==='fix'&&p.alive){S.sab.fx[m.id]=Date.now();const n=Object.values(S.sab.fx).filter(t=>Date.now()-t<10000).length;if(n>=2){S.sab=null;lg('Sabotage fixed')}}break;
+case'pan':if(S.phase!=='lobby'&&!S.paused){S.paused=true;S.pt=Date.now();S.panic=p.n;S.pn=(S.pn||0)+1;lg('REAL EMERGENCY from '+p.n)}break;
+case'pause':if(H&&S.phase!=='lobby'&&S.phase!=='over'){if(S.paused){const d=Date.now()-S.pt;if(S.m)S.m.end+=d;if(S.sab)S.sab.end+=d;if(S.rend)S.rend+=d;S.paused=false;S.panic=null}else{S.paused=true;S.pt=Date.now()}}break;
+case'pool':if(H&&S.phase==='lobby'){S.pool=String(m.p).split('\n').map(s=>s.trim().slice(0,80)).filter(Boolean).slice(0,40)}break;
+case'go':if(S.phase==='meeting'&&S.m.st==='g'&&(H||m.id===S.m.by)){S.m.st='d';S.m.end=Date.now()+S.set.disc*1000}break;
+case'end':if(H&&S.phase!=='lobby')win('host');break;
+case'again':if(H){for(const k in S.pl){Object.assign(S.pl[k],{role:'',alive:true,tk:[],mt:0})}S.phase='lobby';S.win=null;S.sab=null;S.paused=false;S.m=null}break;
+case'kick':if(H&&m.p!==S.hid&&S.pl[m.p]){lg(S.pl[m.p].n+' removed');delete S.pl[m.p];chk()}break}
+bc()}
+function tick(){if(!host||!S||S.paused||S.phase==='lobby'||S.phase==='over')return;const t=Date.now();let ch=0;
+if(S.sab&&t>S.sab.end){if(S.sab.t==='fix')win('imp');else S.sab=null;ch=1}
+if(S.phase==='meeting'){const m=S.m;if(m.st==='d'&&t>m.end){m.st='v';m.end=t+S.set.vote*1000;ch=1}else if(m.st==='v'&&(t>m.end||alive().every(k=>k in S.vt))){endVote();ch=1}}
+else if(S.phase==='result'&&t>S.rend){S.phase='play';chk();ch=1}
+if(ch)bc()}
+
+/* ---------- client ---------- */
+function send(m){m.id=me.id;if(host)act(m);else if(R)R.emit('act',m).catch(()=>{})}
+function onState(s){const first0=!S;S=s;off=s.now-Date.now();if(!S.pl[me.id]){S=null;err='You’re not in this game (it may have started, or you were removed).';render();return}
+if(first0)sv();apply()}
+function apply(){if(first){first=false;lm=S.m&&S.phase!=='meeting'?S.m.v:0;ls=S.sab?S.sab.id:0;lpn=S.pn||0}
+if(S.m&&S.m.v>lm){lm=S.m.v;siren();flash(S.m.k==='b'?'BODY REPORTED':'EMERGENCY MEETING')}
+if(S.sab&&S.sab.id!==ls){ls=S.sab.id;if(S.sab.t==='fix'){siren(1.5);flash('SABOTAGE!\nFIX IT','#7a0010')}else if(S.sab.t!=='lights'){siren(1);flash({comms:'COMMS DOWN',freeze:'TASKS FROZEN',lock:'DOORS LOCKED'}[S.sab.t],'#7a0010')}}
+if((S.pn||0)>lpn){lpn=S.pn;siren();flash('REAL EMERGENCY\nGame paused','#b45309')}
+if(S.phase==='play'&&pp!=='play')kcd=Date.now()+S.set.cool*1000;pp=S.phase;
+if(S.v!==apply.v||!apply.ok){apply.v=S.v;apply.ok=1;render()}}
+const SUPA_URL='https://hjatvurdohfrqnuefwpe.supabase.co',SUPA_KEY='sb_publishable_5WtL0fTlYUJf92kGQeEjlA_sTBMXpeP';
+let SB=null,CH=null;
+async function connect(c,asHost){code=c.toUpperCase();
+if(SUPA_URL.startsWith('PASTE')||typeof supabase==='undefined'){err='Not set up yet: the host needs to paste the Supabase URL and key into index.html (see README), and you need internet.';return false}
+try{SB=SB||supabase.createClient(SUPA_URL,SUPA_KEY);CH=SB.channel('aug-'+code.toLowerCase(),{config:{broadcast:{self:false,ack:false}}});
+CH.on('broadcast',{event:'act'},m=>{if(host)act(m.payload)});CH.on('broadcast',{event:'state'},m=>{if(!host)onState(m.payload)});
+await new Promise((ok,no)=>{const t=setTimeout(()=>no('timeout'),10000);CH.subscribe(s=>{if(s==='SUBSCRIBED'){clearTimeout(t);ok()}else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT'||s==='CLOSED'){clearTimeout(t);no(s)}})});
+R={emit:(ev,p)=>CH.send({type:'broadcast',event:ev,payload:p})};return true}catch(e){err='Couldn\u2019t connect ['+(e&&e.message||e)+']. Check your internet and the Supabase URL/key.';return false}}
+async function create(){const n=$('#nm').value.trim();if(!n){err='Enter your name first.';return render()}me.n=n;me.id=me.id||Math.random().toString(36).slice(2,10);au();
+code=Array.from({length:4},()=>'ABCDEFGHJKLMNPQRSTUVWXYZ'[Math.random()*24|0]).join('');err='';busy=true;render();if(!await connect(code,1)){busy=false;return render()}busy=false;host=true;S=newS();S.hid=me.id;act({a:'join',id:me.id,n});first=true;setInterval(()=>push(),3000);setInterval(tick,1000)}
+async function joinG(){const n=$('#nm').value.trim(),c=$('#cd').value.trim();if(!n||c.length<4){err='Enter your name and the 4-letter code.';return render()}me.n=n;me.id=me.id||Math.random().toString(36).slice(2,10);au();err='';busy=true;render();
+if(!await connect(c)){busy=false;return render()}first=true;let t=0;const iv=setInterval(()=>{if(S||++t>6){clearInterval(iv);if(!S){busy=false;err='Couldn’t find that game (or it already started). Check the code.';render()}return}R.emit('act',{a:'join',id:me.id,n}).catch(()=>{})},1500);R.emit('act',{a:'join',id:me.id,n}).catch(()=>{})}
+async function resume(){const s=ld();if(!s)return;me=s.me;first=true;if(!await connect(s.code,s.host))return render();if(s.host&&s.S){host=true;S=s.S;S.paused=true;S.pt=Date.now();setInterval(()=>push(),3000);setInterval(tick,1000);bc()}else{busy=true;render();setInterval(function(){if(!S)R.emit('act',{a:'join',id:me.id,n:me.n}).catch(()=>{})},1500)}}
+
+/* ---------- views ---------- */
+const crew=(c,s)=>`<svg width="${s||22}" height="${(s||22)*1.15}" viewBox="0 0 24 28" style="flex:none"><rect x="5" y="2" width="14" height="19" rx="7" fill="${c}"/><rect x="2" y="9" width="5" height="11" rx="2.5" fill="${c}"/><rect x="5" y="19" width="6" height="7" rx="2.5" fill="${c}"/><rect x="13" y="19" width="6" height="7" rx="2.5" fill="${c}"/><rect x="10" y="6" width="11" height="7" rx="3.5" fill="#bfe9ff"/></svg>`;
+const dot=p=>crew(COL[p.c%12][1]);
+const hp=()=>(S.paused&&S.phase==='result'?'<div class=card>⏸ PAUSED</div>':'')+(me.id===S.hid?'<button class="b m" data-a=pause>'+(S.paused?'▶ Resume':'⏸ Pause')+'</button>':'');
+const pbar=()=>{const q=S.pl[me.id],imp=q&&q.role==='imp';let v=prog(),note='';
+if(!imp&&S.phase==='play'){if(S.sab&&S.sab.t==='comms')return`<div class=pb><i style="width:0"></i></div><div class=mu>\ud83d\udce1 Comms down \u2014 task bar offline</div>`;
+if(!S.set.bar){v=S.pshow||0;note=' (updates at meetings)'}}
+return`<div class=pb><i style="width:${v}%"></i></div><div class=mu>Tasks complete: ${v}%${note}</div>`};
+const tm=(e,l)=>`<span data-e="${e}" ${l?'data-l=1':''}>0</span>`;
+function joinV(){const s=ld();return`<div class=hero>${crew('#e5383b',70)}<h1>Among Us</h1><div class=sub>Year 11 Field Trip Edition</div></div><div class=card><input id=nm maxlength=14 placeholder="Your name" value="${esc(me.n||(s&&s.me.n)||'')}"><input id=cd maxlength=4 placeholder="Room code" style="text-transform:uppercase"><button class="b g" data-a=join ${busy?'disabled':''}>${busy?'Looking for game…':'Join game'}</button><button class="b m" data-a=create ${busy?'disabled':''}>${busy?'Connecting… (can take ~10s)':'Host a new game'}</button>${s?`<button class="b m" data-a=resume>Rejoin ${esc(s.code)} as ${esc(s.me.n)}</button>`:''}${err?`<div style="color:var(--rd)">${esc(err)}</div>`:''}</div><div class=mu>Host creates a game and shares the 4-letter code. Everyone joins on their own phone.</div>`}
+function plist(adm){return Object.entries(S.pl).map(([k,p])=>`<div class="row ${p.alive?'':'dead'}">${dot(p)}<b>${esc(p.n)}</b><span class=mu>${COL[p.c%12][0]}${k===S.hid?' · host':''}${k===me.id?' · you':''}</span><span class=sp></span>${p.alive?'':'<span class=tag>ghost</span>'}${adm&&k!==me.id?`<button class="b s m" data-a=kick data-p="${k}">Kick</button>`:''}</div>`).join('')}
+function lobbyV(){const H=me.id===S.hid,s=S.set,L=[['imp','Impostors'],['tasks','Tasks each'],['disc','Discussion (s)'],['vote','Voting (s)'],['mtg','Emergency meetings each'],['cool','Kill cooldown (s)'],['rev','Reveal role on eject'],['bar','Task bar live'],['anon','Hide vote counts']];
+return`<div class=card><div class=mu>Room code</div><div class=big style="letter-spacing:8px">${code}</div></div><div class=card><b>Players (${Object.keys(S.pl).length})</b>${plist(H)}</div>`+(H?`<div class=card><b>Settings</b>${L.map(([k,l])=>`<div class=row><span>${l}</span><span class=sp></span><button class="b s m" data-a=set data-p="${k},-1">−</button><b style="min-width:40px;text-align:center">${['rev','bar','anon'].includes(k)?(s[k]?'On':'Off'):s[k]}</b><button class="b s m" data-a=set data-p="${k},1">+</button></div>`).join('')}</div><div class=card><b>Tasks</b> <span class=mu>one per line · ${(S.pool||[]).length} in list · each player gets ${S.set.tasks} at random</span><textarea id=tl rows=7 style="width:100%;background:var(--in);color:var(--tx);border:2px solid #5a1a22;border-radius:10px;padding:10px;font-size:14px;margin-top:6px">${esc((S.pool||[]).join('\n'))}</textarea><div class=mu>Saves when you tap away.</div></div><button class="b g" data-a=start ${Object.keys(S.pl).length<2?'disabled':''}>Start game ${Object.keys(S.pl).length<2?'(need 2+ players)':''}</button>`:`<div class=card>Waiting for the host to start…</div>`)}
+function playV(p){const imp=p.role==='imp',H=me.id===S.hid;let h=pbar();
+if(S.paused)h+=`<div class=card style="background:#7c2d12">⏸ GAME PAUSED${S.panic?' — real emergency from '+esc(S.panic):''}</div>`;
+h+=`<div class=card id=role><div class=hid>👁 HOLD TO REVEAL YOUR ROLE</div><div class=rv>${imp?`<div style="color:var(--rd);font-size:30px">IMPOSTOR</div><div class=mu>Partners: ${Object.values(S.pl).filter(q=>q.role==='imp'&&q!==p).map(q=>esc(q.n)).join(', ')||'none'}</div>`:`<div style="color:#4ade80;font-size:30px">CREWMATE</div>`}</div></div>`;
+if(!p.alive)h+=`<div class=card>👻 You’re a ghost. Stay silent and ${imp?'keep out of the way':'finish your tasks'}.</div>`;
+if(S.sab&&S.sab.t==='fix')h+=`<div class="card sir" style="background:#7a0010"><b>⚠ SABOTAGE: 2 people must press FIX at nearly the same time!</b><div class=big>${tm(S.sab.end)}s</div><button class="b r" data-a=fix>FIX IT</button></div>`;
+if(S.sab&&!imp&&p.alive){const T={comms:'\ud83d\udce1 COMMS DOWN \u2014 task bar hidden',freeze:'\ud83e\uddca TASKS FROZEN \u2014 you can\u2019t finish tasks',lock:'\ud83d\udd12 DOORS LOCKED \u2014 stay where you are!'}[S.sab.t];if(T)h+=`<div class="card sir" style="background:#7a0010"><b>${T}</b><div class=big>${tm(S.sab.end)}s</div></div>`}
+h+=`<div class=card><b>Your tasks</b>${p.tk.map((t,i)=>`<button class="tk ${t.d?'d':''}" data-a=t data-p=${i}>${t.d?'✅':'⬜'} ${esc(t.t)}</button>`).join('')}</div>`;
+if(imp)h+=`<div class=card><b>\ud83d\udd75 Crew tasks (intel)</b>${crewIds().map(k=>`<div class=mu style="margin-top:6px"><b>${esc(S.pl[k].n)}</b>${S.pl[k].alive?'':' \ud83d\udc7b'}</div>${S.pl[k].tk.map(t=>`<div class=mu>${t.d?'\u2705':'\u2b1c'} ${esc(t.t)}</div>`).join('')}`).join('')}</div>`;
+if(p.alive){h+=`<button class="b r" data-a=rep>🚨 REPORT BODY</button><button class="b" data-a=emg ${p.mt>=S.set.mtg?'disabled':''}>📣 EMERGENCY MEETING (${Math.max(0,S.set.mtg-p.mt)} left)</button>`;
+if(!imp)h+=`<button class="b m" data-a=die>💀 I was killed</button>`;
+else h+=`<div class=card><b>Impostor tools</b><div class=row><span>Kill cooldown: ${tm(kcd,1)}</span><span class=sp></span><button class="b s m" data-a=kc>I got a kill</button></div>${S.sab?'':`<button class="b m" data-a=sab data-p=lights>🌑 Lights out (30s)</button><button class="b m" data-a=sab data-p=fix>☢ Reactor (2 people fix, 60s)</button><button class="b m" data-a=sab data-p=comms>📡 Comms down (45s)</button><button class="b m" data-a=sab data-p=freeze>🧊 Freeze tasks (60s)</button><button class="b m" data-a=sab data-p=lock>🔒 Lock doors (30s)</button>`}</div>`}
+h+=`<div class=card><b>Players</b>${plist(H)}</div><button class="b m" data-a=pan>🆘 REAL emergency (pause game)</button>`;
+if(H)h+=`<div class=card><b>Host controls</b><button class="b m" data-a=pause>${S.paused?'▶ Resume':'⏸ Pause'}</button><button class="b r" data-a=end>End game</button><div class=mu style="margin-top:8px">Log:<br>${S.log.slice().reverse().map(esc).join('<br>')}</div></div>`;
+return h}
+function meetV(p){const m=S.m,by=S.pl[m.by];let h=`<div class="card sir" style="background:#7a0010;text-align:center"><b>${m.k==='b'?'BODY REPORTED':'EMERGENCY MEETING'}</b><div class=mu style="color:#fff">called by ${esc(by?by.n:'?')}</div></div>${pbar()}`;
+if(S.paused)h+=`<div class=card>⏸ PAUSED</div>`;
+if(m.st==='g')h+=`<div class=card style="text-align:center"><div class=big>🚶 GO TO THE MEETING PLACE</div><div class=mu>The discussion timer starts once everyone is there.</div>${(me.id===S.hid||me.id===m.by)?'<button class="b g" data-a=go>✅ Everyone’s here — start discussion</button>':'<div class=mu>Waiting for the host or the person who called it…</div>'}</div><div class=card>${plist(false)}</div>`;else if(m.st==='d')h+=`<div class=card style="text-align:center">Discussion<div class=big>${tm(m.end)}s</div><div class=mu>Talk it out. Voting opens when this hits zero.</div></div><div class=card>${plist(false)}</div>`;
+else{h+=`<div class=card style="text-align:center">Vote now<div class=big>${tm(m.end)}s</div></div>`;
+if(!p.alive)h+=`<div class=card>👻 Ghosts can’t vote.</div>`;
+else if(me.id in S.vt)h+=`<div class=card>✅ Vote locked in.</div>`;
+else h+=alive().map(k=>`<button class=b data-a=vote data-p="${k}" style="background:${COL[S.pl[k].c%12][1]};color:#000">${esc(S.pl[k].n)}</button>`).join('')+`<button class="b m" data-a=vote data-p=skip>Skip vote</button>`;
+h+=`<div class=mu>${Object.keys(S.vt).length}/${alive().length} voted</div>`}return h+hp()}
+function resV(){return`<div class="card drop" style="text-align:center"><div class=big>${esc(S.ej)}</div><div class=mu>${S.set.anon?'Votes are hidden':(S.tl.map(esc).join(' · ')||'No votes')}</div></div>${pbar()}${hp()}`}
+function overV(){const H=me.id===S.hid,w=S.win;return`<div class=card style="text-align:center"><div class="big pop" style="color:${w==='imp'?'var(--rd)':'#4ade80'}">${w==='crew'?'CREWMATES WIN':w==='imp'?'IMPOSTORS WIN':'GAME ENDED'}</div></div><div class=card><b>Roles</b>${Object.values(S.pl).map(p=>`<div class=row>${dot(p)}${esc(p.n)}<span class=sp></span><span class=tag style="background:${p.role==='imp'?'var(--rd)':'#166534'};color:#fff">${p.role==='imp'?'Impostor':'Crew'}</span></div>`).join('')}</div><div class=card><b>Game log</b><div class=mu>${S.log.map(esc).join('<br>')}</div></div>${H?'<button class="b g" data-a=again>Play again (back to lobby)</button>':'<div class=mu>Waiting for host…</div>'}`}
+function render(){if(document.activeElement&&document.activeElement.id==='tl')return;if(dn&&Date.now()-dnT<1500){pend=1;return}const A=$('#app');if(!S){A.innerHTML=joinV();return}const p=S.pl[me.id];
+const hd=`<div class=row>${crew('#e5383b',26)}<h1>Among Us <span class=mu>Y11 Trip</span></h1><span class=sp></span><button class="b s m" data-a=red>🌙 Night</button></div>`;
+let v=S.phase==='lobby'?lobbyV():S.phase==='play'?playV(p):S.phase==='meeting'?meetV(p):S.phase==='result'?resV():overV();
+A.innerHTML=hd+v;
+const lo=$('#lo'),L=S.sab&&S.sab.t==='lights'&&S.phase==='play'&&p.role!=='imp'&&p.alive;lo.style.display=L?'flex':'none';if(L)lo.innerHTML=`Lights out… ${tm(S.sab.end)}s`}
+document.addEventListener('click',e=>{au();const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,p=b.dataset.p;
+switch(a){case'join':joinG();break;case'create':create();break;case'resume':resume();break;
+case't':send({a:'done',i:+p});break;case'rep':case'emg':case'fix':case'go':case'start':case'pause':case'again':send({a});break;
+case'die':if(confirm('Confirm: you were killed?'))send({a});break;case'end':if(confirm('End the game for everyone?'))send({a});break;
+case'pan':if(confirm('REAL emergency? This pauses the game for everyone.'))send({a});break;
+case'vote':case'sab':case'kick':case'set':send({a,[a==='vote'?'t':a==='sab'?'t':'p']:p});break;
+case'kc':kcd=Date.now()+S.set.cool*1000;document.querySelectorAll('[data-l]').forEach(el=>el.dataset.e=kcd);break;case'red':document.body.classList.toggle('red');break}});
+const rv=(e,on)=>{const r=e.target.closest&&e.target.closest('#role');if(r){r.querySelector('.hid').style.display=on?'none':'';r.querySelector('.rv').style.display=on?'block':'none'}};
+document.addEventListener('change',e=>{if(e.target.id==='tl')send({a:'pool',p:e.target.value})});document.addEventListener('focusout',e=>{if(e.target.id==='tl')setTimeout(render,150)});let dn=0,pend=0,dnT=0;document.addEventListener('pointerdown',e=>{dn=1;dnT=Date.now();rv(e,1)});['pointerup','pointercancel'].forEach(t=>document.addEventListener(t,e=>{dn=0;rv(e,0);if(pend){pend=0;setTimeout(render,80)}}));document.addEventListener('pointerout',e=>rv(e,0));
+setInterval(()=>{document.querySelectorAll('[data-e]').forEach(el=>{const s=Math.ceil((+el.dataset.e-(el.dataset.l?Date.now():now()))/1000);el.textContent=s>0?s:(el.dataset.l?'READY':0)})},400);
+render();
+</script></body></html>
